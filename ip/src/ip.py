@@ -139,6 +139,7 @@ class IP:
                 self.str_mask = str_mask
         else:
             self.str_address = str_src
+        return True
 
     @staticmethod
     def check_ipv4_validity(str_src):
