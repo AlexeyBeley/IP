@@ -1,21 +1,60 @@
 import pdb
 import re
 
-from enum import Enum
-
 
 class IP:
     """
     Class for network engineers usage
     """
 
-    def __init__(self):
+    def __init__(self, address, **kwargs):
         self.type = None
         self.str_int_mask = None
         self.int_mask = None
         self.str_mask = None
         self.str_address = None
         self.logger = None
+
+        if not self.init_address(address, **kwargs):
+            raise Exception
+
+    def init_address(self, str_src, **kwargs):
+        if "logger" in kwargs:
+            self.logger = kwargs["logger"]
+
+        if "." in str_src:
+            self.type = IP.Types.IPV4
+
+        if ":" in str_src:
+            self.type = IP.Types.IPV6
+
+        self.str_mask = None
+        self.str_int_mask = None
+        self.int_mask = None
+
+        if "str_mask" in kwargs:
+            raise NotImplementedError
+
+        if "int_mask" in kwargs:
+            if "/" in str_src:
+                raise Exception
+            self.int_mask = kwargs["int_mask"]
+
+        if "/" in str_src:
+            if (self.str_mask is not None) or \
+                    (self.int_mask is not None) or \
+                    (self.str_int_mask is not None):
+                raise Exception
+
+            self.str_address, str_mask = str_src.split("/")
+
+            if str_mask.isdigit():
+                self.str_int_mask = str_mask
+            else:
+                self.str_mask = str_mask
+        else:
+            self.str_address = str_src
+        return True
 
     @property
     def str_int_mask(self):
@@ -69,7 +108,7 @@ class IP:
             self._str_mask = None
             return
 
-        pdb.set_trace()
+        raise NotImplementedError
         if value not in [True, False]:
             raise Exception
 
@@ -102,44 +141,6 @@ class IP:
 
     def init_host(self, str_address, **kwargs):
         return self.init_address(str_address, int_mask=32)
-
-    def init_address(self, str_src, **kwargs):
-        if "logger" in kwargs:
-            self.logger = kwargs["logger"]
-
-        if "." in str_src:
-            self.type = IP.Types.IPV4
-
-        if ":" in str_src:
-            self.type = IP.Types.IPV6
-
-        self.str_mask = None
-        self.str_int_mask = None
-        self.int_mask = None
-
-        if "str_mask" in kwargs:
-            pdb.set_trace()
-
-        if "int_mask" in kwargs:
-            if "/" in str_src:
-                raise Exception
-            self.int_mask = kwargs["int_mask"]
-
-        if "/" in str_src:
-            if (self.str_mask is not None) or \
-                    (self.int_mask is not None) or \
-                    (self.str_int_mask is not None):
-                raise Exception
-
-            self.str_address, str_mask = str_src.split("/")
-
-            if str_mask.isdigit():
-                self.str_int_mask = str_mask
-            else:
-                self.str_mask = str_mask
-        else:
-            self.str_address = str_src
-        return True
 
     @staticmethod
     def check_ipv4_validity(str_src):
@@ -183,7 +184,6 @@ class IP:
                 match_part = re.match(pattern, str_part)
                 if not match_part:
                     return False
-
         except Exception:
             return False
 
@@ -239,6 +239,8 @@ class IP:
 
         return True
 
-    class Types(Enum):
+    class Types:
+        """Enum simulation"""
+
         IPV4 = "IPv4"
         IPV6 = "IPv6"
