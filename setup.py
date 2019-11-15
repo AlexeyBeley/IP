@@ -5,14 +5,14 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="ip_pkg",
-    version="0.0.4",
+    version="0.0.8",
     author="Horey",
     author_email="alexey.beley@gmail.com",
     description="IP mgmt module",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/AlexeyBeley/IP",
-    packages=setuptools.find_packages(include=['ip']),
+    packages=setuptools.find_packages(include=["ip"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
