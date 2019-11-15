@@ -1,4 +1,3 @@
-import pdb
 import re
 
 
@@ -6,7 +5,7 @@ class IP:
     """
     Class for network engineers usage
     """
-    ANY =  None
+    ANY = None
 
     @staticmethod
     def any():
@@ -57,7 +56,7 @@ class IP:
         :param ip: IP
         :return: bool
         """
-        pdb.set_trace()
+        raise NotImplementedError
 
     def intersect(self, ip):
         """
@@ -175,7 +174,6 @@ class IP:
         elif self.int_mask is not None:
             self.str_int_mask = str(self.int_mask)
         else:
-            pdb.set_trace()
             raise NotImplementedError
 
         return self.str_int_mask
@@ -253,8 +251,7 @@ class IP:
                 raise Exception
         elif self.type == IP.Types.IPV6:
             if not IP.check_ipv6_validity(value):
-                pdb.set_trace()
-                raise Exception(value)
+                raise ValueError(value)
         else:
             raise Exception
 

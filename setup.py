@@ -5,7 +5,7 @@ with open("README.md") as fh:
 
 setuptools.setup(
     name="ip_pkg",
-    version="0.0.8",
+    version="1.0.0",
     author="Horey",
     author_email="alexey.beley@gmail.com",
     description="IP mgmt module",
