@@ -1,5 +1,5 @@
 import re
-
+import pdb
 
 class IP:
     """
@@ -32,7 +32,6 @@ class IP:
 
     def __str__(self):
         addresss = ""
-        mask = ""
 
         #  address
         if self.str_address:
@@ -48,6 +47,15 @@ class IP:
             raise Exception
 
         return "{}/{}".format(addresss, mask)
+
+    def __eq__(self, other):
+        if not isinstance(other, IP):
+            return False
+
+        if self.str_address != other.str_address or self.int_mask != other.int_mask:
+            return False
+
+        return True
 
     def contains(self, ip):
         """
@@ -100,9 +108,8 @@ class IP:
         ip_ret = IP("{}/{}".format(str_address, str(mask_len)))
         return ip_ret
 
-    @staticmethod
-    def address_from_str_binary(str_address):
-        return ".".join([str(int(str_address[i: i + 8], 2)) for i in range(0, 4)])
+    def address_from_str_binary(self, str_address):
+        return ".".join([str(int(str_address[i*8: i*8 + 8], 2)) for i in range(0, 4)])
 
     def init_address_from_dict(self, dict_src, **kwargs):
         if self.str_address or self.str_int_mask:
