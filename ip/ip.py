@@ -50,12 +50,12 @@ class IP:
 
     def __eq__(self, other):
         if not isinstance(other, IP):
-            return -1
+            return False
 
         if self.str_address != other.str_address or self.int_mask != other.int_mask:
-            return 0
+            return False
 
-        return 1
+        return True
 
     def contains(self, ip):
         """
